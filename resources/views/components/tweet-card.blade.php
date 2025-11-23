@@ -98,29 +98,24 @@
                 <div class="flex items-center space-x-12 mt-3">
                     {{-- Like Button --}}
                     @auth
-                        <form method="POST" action="{{ route('tweets.toggleLike', $tweet) }}" class="inline">
-                            @csrf
-                            @php
-                                $isLiked = auth()->check() && auth()->user()->likedTweets->contains($tweet->id);
-                                $likesCount = $tweet->likes_count ?? $tweet->likes()->count();
-                            @endphp
-                            <button 
-                                type="submit" 
-                                class="group flex items-center space-x-2 {{ $isLiked ? 'text-rose-500' : 'text-gray-500 dark:text-gray-400 hover:text-rose-500' }} transition">
-                                <div class="p-2 rounded-full group-hover:bg-rose-50 dark:group-hover:bg-rose-900/20 transition">
-                                    @if($isLiked)
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
-                                        </svg>
+                        <button 
+                            type="button"
+                            onclick="toggleLike({{ $tweet->id }})"
+                            id="like-btn-{{ $tweet->id }}"
+                            data-tweet-id="{{ $tweet->id }}"
+                            data-liked="{{ auth()->check() && auth()->user()->likedTweets->contains($tweet->id) ? 'true' : 'false' }}"
+                            class="group flex items-center space-x-2 {{ auth()->check() && auth()->user()->likedTweets->contains($tweet->id) ? 'text-rose-500' : 'text-gray-500 dark:text-gray-400 hover:text-rose-500' }} transition">
+                            <div class="p-2 rounded-full group-hover:bg-rose-50 dark:group-hover:bg-rose-900/20 transition">
+                                <svg id="like-icon-{{ $tweet->id }}" class="w-5 h-5" fill="{{ auth()->check() && auth()->user()->likedTweets->contains($tweet->id) ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
+                                    @if(auth()->check() && auth()->user()->likedTweets->contains($tweet->id))
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
                                     @else
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                                        </svg>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     @endif
-                                </div>
-                                <span class="text-sm">{{ $likesCount > 0 ? $likesCount : '' }}</span>
-                            </button>
-                        </form>
+                                </svg>
+                            </div>
+                            <span id="like-count-{{ $tweet->id }}" class="text-sm">{{ ($tweet->likes_count ?? $tweet->likes()->count()) > 0 ? ($tweet->likes_count ?? $tweet->likes()->count()) : '' }}</span>
+                        </button>
                     @else
                         <div class="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
                             <div class="p-2">
@@ -149,5 +144,46 @@ function toggleEdit(tweetId) {
         contentDiv.classList.remove('hidden');
         editForm.classList.add('hidden');
     }
+}
+
+function toggleLike(tweetId) {
+    const button = document.getElementById('like-btn-' + tweetId);
+    const icon = document.getElementById('like-icon-' + tweetId);
+    const countSpan = document.getElementById('like-count-' + tweetId);
+    
+    // Get CSRF token
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    
+    fetch(`/tweets/${tweetId}/like`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': token,
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update button state
+            if (data.isLiked) {
+                button.classList.remove('text-gray-500', 'dark:text-gray-400', 'hover:text-rose-500');
+                button.classList.add('text-rose-500');
+                icon.setAttribute('fill', 'currentColor');
+                icon.innerHTML = '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>';
+            } else {
+                button.classList.add('text-gray-500', 'dark:text-gray-400', 'hover:text-rose-500');
+                button.classList.remove('text-rose-500');
+                icon.setAttribute('fill', 'none');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>';
+            }
+            
+            // Update count
+            countSpan.textContent = data.likesCount > 0 ? data.likesCount : '';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 </script>

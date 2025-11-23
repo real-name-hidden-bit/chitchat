@@ -69,11 +69,28 @@ class TweetController extends Controller
         $user = Auth::user();
 
         if (!$user) {
+            if (request()->wantsJson()) {
+                return response()->json(['error' => 'Unauthenticated'], 401);
+            }
             return redirect()->route('login');
         }
 
         // Toggle the like (attach if not liked, detach if already liked)
         $user->likedTweets()->toggle($tweet->id);
+
+        // Refresh the tweet to get updated likes count
+        $tweet->refresh();
+        $likesCount = $tweet->likes()->count();
+        $isLiked = $user->likedTweets->contains($tweet->id);
+
+        // Return JSON for AJAX requests
+        if (request()->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'isLiked' => $isLiked,
+                'likesCount' => $likesCount
+            ]);
+        }
 
         return redirect()->back();
     }

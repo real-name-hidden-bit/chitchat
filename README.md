@@ -1,59 +1,326 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ChitChat - A Twitter-Like Social Media Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+ChitChat is a modern social media web application inspired by Twitter, built with Laravel and Tailwind CSS. It provides users with a clean, intuitive interface to share thoughts, interact with others, and build their online presence.
 
-## About Laravel
+## 📋 Project Description
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+ChitChat is a full-featured microblogging platform that allows users to:
+- Share short messages (tweets) up to 280 characters
+- Like and interact with other users' posts
+- Edit and delete their own tweets
+- Customize their profile with emoji avatars and About Me sections
+- Toggle between light and dark themes
+- View personalized feeds and individual user profiles
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This project was developed as a midterm examination project for a Laravel course, demonstrating proficiency in modern web development practices, MVC architecture, and responsive design.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Features Implemented
 
-## Learning Laravel
+### User Authentication
+- **User Registration** - Create new accounts with email verification
+- **Login/Logout** - Secure authentication system using Laravel Breeze
+- **Profile Picture Selection** - Choose from 20 unique emoji avatars during registration
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Tweet Management
+- **Create Tweets** - Post messages up to 280 characters with real-time character counter
+- **Edit Tweets** - Modify your own tweets with inline editing
+- **Delete Tweets** - Remove unwanted posts with confirmation dialog
+- **Tweet Timestamps** - Display relative time (e.g., "2 hours ago") with edited indicators
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Social Interactions
+- **Like System** - Live like/unlike functionality without page refresh
+- **Real-time Like Counter** - Instant updates using AJAX
+- **User Profiles** - View any user's profile with their tweets and stats
+- **Profile Stats** - Display total tweets and total likes received
 
-## Laravel Sponsors
+### User Profiles
+- **Profile Page** - Dedicated page showing user information and tweet history
+- **Editable About Me** - 500-character biography section with character counter
+- **Clickable Usernames** - Navigate to user profiles from any tweet
+- **Profile Stats Dashboard** - View tweet count and engagement metrics
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### UI/UX Features
+- **Dark/Light Mode** - Toggle theme with persistent localStorage
+- **Responsive Design** - Mobile-friendly three-column layout (sidebar, feed, trending)
+- **Twitter-Inspired UI** - Classic sky-blue color scheme (#0EA5E9)
+- **Custom Branding** - ChitChat logo and personalized design elements
+- **Smooth Animations** - Hover effects and transitions for better UX
+- **Tab Navigation** - Switch between "Home" (all tweets) and "My Tweets" (personal feed)
 
-### Premium Partners
+### Additional Features
+- **Avatar System** - Reusable avatar component with 4 size variants (sm, md, lg, xl)
+- **Dropdown Menus** - Alpine.js-powered interactive menus
+- **Form Validation** - Server-side and client-side input validation
+- **Error Handling** - User-friendly error messages and alerts
+- **CSRF Protection** - Built-in Laravel security features
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🛠️ Installation Instructions
 
-## Contributing
+### Prerequisites
+- PHP >= 8.2
+- Composer
+- Node.js and npm
+- MySQL/MariaDB database server
+- Git (optional)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/real-name-hidden-bit/chitchat.git
+cd chitchat
+```
 
-## Code of Conduct
+Or download the ZIP file and extract it to your local machine.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Step 2: Install PHP Dependencies
+```bash
+composer install
+```
 
-## Security Vulnerabilities
+### Step 3: Install JavaScript Dependencies
+```bash
+npm install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Step 4: Environment Configuration
+1. Copy the example environment file:
+```bash
+cp .env.example .env
+```
 
-## License
+2. Generate application key:
+```bash
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+3. Edit the `.env` file and configure your database connection:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=chitchat
+DB_USERNAME=your_database_username
+DB_PASSWORD=your_database_password
+```
+
+### Step 5: Build Frontend Assets
+```bash
+npm run build
+```
+
+For development with hot reload:
+```bash
+npm run dev
+```
+
+## 🗄️ Database Setup
+
+### Step 1: Create Database
+Create a new MySQL database named `chitchat` using phpMyAdmin or command line:
+
+**Using phpMyAdmin:**
+1. Open phpMyAdmin in your browser (usually `http://localhost/phpmyadmin`)
+2. Click "New" in the left sidebar
+3. Enter `chitchat` as the database name
+4. Select `utf8mb4_unicode_ci` as collation
+5. Click "Create"
+
+**Using Command Line:**
+```bash
+mysql -u root -p
+CREATE DATABASE chitchat CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+exit;
+```
+
+### Step 2: Run Migrations
+Execute the database migrations to create all necessary tables:
+```bash
+php artisan migrate
+```
+
+This will create the following tables:
+- `users` - User accounts with profile pictures and about me sections
+- `tweets` - User posts/tweets
+- `likes` - Many-to-many relationship between users and tweets
+- `cache` - Application caching
+- `jobs` - Queue system
+- `password_reset_tokens` - Password reset functionality
+- `sessions` - User session management
+
+### Step 3: (Optional) Seed Sample Data
+If you want to populate the database with test data:
+```bash
+php artisan db:seed
+```
+
+### Database Schema Overview
+
+**Users Table:**
+- id, name, email, password
+- profile_picture (emoji avatar)
+- about_me (biography, max 500 chars)
+- email_verified_at, timestamps
+
+**Tweets Table:**
+- id, user_id (foreign key)
+- content (max 280 chars)
+- created_at, updated_at
+
+**Likes Table:**
+- tweet_id (foreign key)
+- user_id (foreign key)
+- created_at
+
+## 🚀 Running the Application
+
+### Step 1: Start the Development Server
+```bash
+php artisan serve
+```
+
+The application will be available at `http://localhost:8000`
+
+### Step 2: (Optional) Start Vite Dev Server
+For hot module replacement during development:
+```bash
+npm run dev
+```
+
+### Step 3: Access the Application
+Open your browser and navigate to:
+```
+http://localhost:8000
+```
+
+## 📸 Screenshots
+
+### Homepage/Feed
+![Homepage Screenshot](screenshots/homepage.png)
+*Main feed showing tweets from all users with the compose box at the top*
+
+### Dark Mode
+![Dark Mode Screenshot](screenshots/dark-mode.png)
+*Dark theme toggle with persistent preference across sessions*
+
+### User Profile
+![Profile Page Screenshot](screenshots/profile.png)
+*User profile displaying avatar, stats, About Me section, and personal tweets*
+
+### Registration with Avatar Selection
+![Registration Screenshot](screenshots/registration.png)
+*Sign-up page with 20 emoji profile picture options*
+
+### Tweet Interactions
+![Tweet Interactions Screenshot](screenshots/interactions.png)
+*Like button with live counter and edit/delete options for own tweets*
+
+### About Me Section
+![About Me Screenshot](screenshots/about-me.png)
+*Editable biography section with 500-character limit and counter*
+
+**Note:** Place your screenshots in a `screenshots/` folder in the project root directory with the following filenames:
+- `homepage.png` - Main feed view
+- `dark-mode.png` - Dark theme enabled
+- `profile.png` - User profile page
+- `registration.png` - Sign-up form with avatars
+- `interactions.png` - Tweet with like/edit/delete
+- `about-me.png` - Profile with About Me section
+
+## 🏗️ Project Structure
+
+```
+ChitChat/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       ├── Auth/
+│   │       │   ├── AuthenticatedSessionController.php
+│   │       │   └── RegisteredUserController.php
+│   │       ├── ProfileController.php
+│   │       └── TweetController.php
+│   └── Models/
+│       ├── Tweet.php
+│       └── User.php
+├── database/
+│   └── migrations/
+│       ├── 0001_01_01_000000_create_users_table.php
+│       ├── 0001_01_01_000001_create_cache_table.php
+│       └── 0001_01_01_000002_create_jobs_table.php
+├── resources/
+│   ├── css/
+│   │   └── app.css
+│   ├── js/
+│   │   ├── app.js
+│   │   └── bootstrap.js
+│   └── views/
+│       ├── auth/
+│       │   ├── login.blade.php
+│       │   └── register.blade.php
+│       ├── components/
+│       │   ├── tweet-card.blade.php
+│       │   └── user-avatar.blade.php
+│       ├── profile/
+│       │   └── show.blade.php
+│       └── welcome.blade.php
+├── routes/
+│   └── web.php
+├── tailwind.config.js
+├── vite.config.js
+├── composer.json
+├── package.json
+└── README.md
+```
+
+## 🔧 Technologies Used
+
+- **Backend:** Laravel 12.39.0 (PHP 8.3.14)
+- **Frontend:** Blade Templates, Tailwind CSS, Alpine.js
+- **Database:** MySQL 8.0+
+- **Build Tool:** Vite
+- **Authentication:** Laravel Breeze
+- **Icons:** Heroicons (SVG)
+
+## 📝 Usage Guide
+
+### Creating a Tweet
+1. Log in to your account
+2. Type your message in the "What's happening?" box (max 280 characters)
+3. Click the "Post" button
+4. Your tweet appears at the top of the feed
+
+### Liking a Tweet
+1. Click the heart icon on any tweet
+2. The counter updates instantly without page reload
+3. Click again to unlike
+
+### Editing Your Profile
+1. Click on your profile picture in the top-right corner
+2. Select "Profile" from the dropdown
+3. Click "Edit About Me"
+4. Enter your biography (max 500 characters)
+5. Click "Save"
+
+### Switching Themes
+1. Click your profile picture in the navigation
+2. Click the theme toggle button
+3. The theme persists across sessions
+
+## 🤝 Credits
+
+This project was developed with assistance from **Gemini Pro 2.0** by Google, which provided guidance on:
+- Laravel best practices and architecture
+- Tailwind CSS styling and responsive design
+- JavaScript AJAX implementation for live updates
+- Database schema design and relationships
+- Modern web development patterns
+
+## 📄 License
+
+This project is open-source and available for educational purposes.
+
+## 👨‍💻 Author
+
+Developed as a midterm examination project for Laravel coursework.
+
+---
+
+**ChitChat** - Where conversations come to life! 💬✨
