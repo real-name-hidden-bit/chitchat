@@ -12,7 +12,25 @@ Route::get('/', function () {
         ->latest()
         ->get();
     
-    return view('welcome', ['tweets' => $tweets, 'activeTab' => 'home']);
+    // Get most active user (user with most tweets)
+    $mostActiveUser = \App\Models\User::withCount('tweets')
+        ->having('tweets_count', '>', 0)
+        ->orderBy('tweets_count', 'desc')
+        ->first();
+    
+    // Get most liked tweet
+    $mostLikedTweet = Tweet::with('user')
+        ->withCount('likes')
+        ->having('likes_count', '>', 0)
+        ->orderBy('likes_count', 'desc')
+        ->first();
+    
+    return view('welcome', [
+        'tweets' => $tweets, 
+        'activeTab' => 'home',
+        'mostActiveUser' => $mostActiveUser,
+        'mostLikedTweet' => $mostLikedTweet
+    ]);
 })->name('home');
 
 // My Tweets route
@@ -28,7 +46,25 @@ Route::get('/my-tweets', function () {
         ->latest()
         ->get();
     
-    return view('welcome', ['tweets' => $tweets, 'activeTab' => 'my-tweets']);
+    // Get most active user (user with most tweets)
+    $mostActiveUser = \App\Models\User::withCount('tweets')
+        ->having('tweets_count', '>', 0)
+        ->orderBy('tweets_count', 'desc')
+        ->first();
+    
+    // Get most liked tweet
+    $mostLikedTweet = Tweet::with('user')
+        ->withCount('likes')
+        ->having('likes_count', '>', 0)
+        ->orderBy('likes_count', 'desc')
+        ->first();
+    
+    return view('welcome', [
+        'tweets' => $tweets, 
+        'activeTab' => 'my-tweets',
+        'mostActiveUser' => $mostActiveUser,
+        'mostLikedTweet' => $mostLikedTweet
+    ]);
 })->name('my-tweets');
 
 // Tweet routes (all require authentication)

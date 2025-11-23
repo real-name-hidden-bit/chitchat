@@ -236,10 +236,74 @@
 
             <!-- Right Sidebar (Optional - can add suggestions, etc) -->
             <div class="hidden lg:block lg:col-span-3">
-                <div class="sticky top-20">
+                <div class="sticky top-20 space-y-4">
+                    <!-- What's Happening Section -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                            <h3 class="font-bold text-xl text-gray-900 dark:text-white">What's happening</h3>
+                        </div>
+                        
+                        <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Most Active User -->
+                            @if(isset($mostActiveUser) && $mostActiveUser)
+                                <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition cursor-pointer">
+                                    <a href="{{ route('profile.show', $mostActiveUser) }}" class="block">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Most Active User</p>
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <x-user-avatar :user="$mostActiveUser" size="sm" />
+                                            <div class="flex-1 min-w-0">
+                                                <p class="font-bold text-gray-900 dark:text-white truncate">{{ $mostActiveUser->name }}</p>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $mostActiveUser->tweets_count }} {{ Str::plural('tweet', $mostActiveUser->tweets_count) }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center text-xs text-sky-500">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                            </svg>
+                                            <span>Top contributor</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+
+                            <!-- Most Liked Tweet -->
+                            @if(isset($mostLikedTweet) && $mostLikedTweet)
+                                <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Most Liked Tweet</p>
+                                    <a href="{{ route('profile.show', $mostLikedTweet->user) }}" class="flex items-center space-x-2 mb-2">
+                                        <x-user-avatar :user="$mostLikedTweet->user" size="sm" />
+                                        <div class="flex-1 min-w-0">
+                                            <p class="font-bold text-sm text-gray-900 dark:text-white truncate">{{ $mostLikedTweet->user->name }}</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">{{ $mostLikedTweet->created_at->diffForHumans() }}</p>
+                                        </div>
+                                    </a>
+                                    <p class="text-sm text-gray-900 dark:text-white mb-2 line-clamp-2">{{ $mostLikedTweet->content }}</p>
+                                    <div class="flex items-center text-sm">
+                                        <svg class="w-4 h-4 text-rose-500 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                                        </svg>
+                                        <span class="text-gray-700 dark:text-gray-300 font-semibold">{{ $mostLikedTweet->likes_count }} {{ Str::plural('like', $mostLikedTweet->likes_count) }}</span>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Fallback if no data -->
+                            @if((!isset($mostActiveUser) || !$mostActiveUser) && (!isset($mostLikedTweet) || !$mostLikedTweet))
+                                <div class="p-8 text-center">
+                                    <svg class="w-12 h-12 mx-auto text-gray-400 dark:text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">No activity yet. Be the first to post!</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Additional Info Card -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-                        <h3 class="font-bold text-gray-900 dark:text-white mb-3">What's happening</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Check out the latest tweets from the community</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                            ChitChat helps you connect with people and share what's on your mind.
+                        </p>
                     </div>
                 </div>
             </div>

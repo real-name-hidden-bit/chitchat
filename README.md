@@ -54,14 +54,12 @@ This project was developed as a midterm examination project for a Laravel course
 - **Error Handling** - User-friendly error messages and alerts
 - **CSRF Protection** - Built-in Laravel security features
 
-## 🛠️ Installation Instructions
-
 ### Prerequisites
 - PHP >= 8.2
 - Composer
 - Node.js and npm
 - MySQL/MariaDB database server
-- Git (optional)
+- Git 
 
 ### Step 1: Clone the Repository
 ```bash
@@ -117,11 +115,21 @@ npm run dev
 ### Step 1: Create Database
 Create a new MySQL database named `chitchat` using phpMyAdmin or command line:
 
-**Using phpMyAdmin:**
-1. Open phpMyAdmin in your browser (usually `http://localhost/phpmyadmin`)
+**Using Database locally:**
+1. Open phpMyAdmin in your b    rowser (usually `http://localhost/phpmyadmin`)
 2. Click "New" in the left sidebar
 3. Enter `chitchat` as the database name
 4. Select `utf8mb4_unicode_ci` as collation
+5. Click "Create"
+
+**Using Dataabase in Laravel Cloud:**
+1. Open project dashboard in Laravel Cloud
+2. Click on the "Resources" or "Databases" tab in the navigation menu
+3. Click the "New Database" button
+4. Configure the database details:
+    Name: Enter chitchat (or your preferred name)
+    Type: Select MySQL (or PostgreSQL if preferred)
+    Version: I Choose the latest stable version (8.0 for MySQL)
 5. Click "Create"
 
 **Using Command Line:**
@@ -179,16 +187,11 @@ php artisan serve
 
 The application will be available at `http://localhost:8000`
 
-### Step 2: (Optional) Start Vite Dev Server
-For hot module replacement during development:
-```bash
-npm run dev
-```
 
-### Step 3: Access the Application
+### Step 2: Access the Application
 Open your browser and navigate to:
 ```
-http://localhost:8000
+https://chitchat-main-ga5iuo.laravel.cloud
 ```
 
 ## 📸 Screenshots
@@ -196,6 +199,7 @@ http://localhost:8000
 ### Homepage/Feed
 ![Homepage Screenshot](screenshots/homepage.png)
 *Main feed showing tweets from all users with the compose box at the top*
+
 
 ### Dark Mode
 ![Dark Mode Screenshot](screenshots/dark-mode.png)
@@ -217,15 +221,9 @@ http://localhost:8000
 ![About Me Screenshot](screenshots/about-me.png)
 *Editable biography section with 500-character limit and counter*
 
-**Note:** Place your screenshots in a `screenshots/` folder in the project root directory with the following filenames:
-- `homepage.png` - Main feed view
-- `dark-mode.png` - Dark theme enabled
-- `profile.png` - User profile page
-- `registration.png` - Sign-up form with avatars
-- `interactions.png` - Tweet with like/edit/delete
-- `about-me.png` - Profile with About Me section
 
-## 🏗️ Project Structure
+
+##  Project Structure
 
 ```
 ChitChat/
@@ -244,7 +242,9 @@ ChitChat/
 │   └── migrations/
 │       ├── 0001_01_01_000000_create_users_table.php
 │       ├── 0001_01_01_000001_create_cache_table.php
-│       └── 0001_01_01_000002_create_jobs_table.php
+│       ├── 0001_01_01_000002_create_jobs_table.php
+│       ├── 0001_01_01_000002_create_tweets_table.php
+│       └── 2025_11_23_000003_create_tweets_table.php
 ├── resources/
 │   ├── css/
 │   │   └── app.css
@@ -262,6 +262,7 @@ ChitChat/
 │       │   └── show.blade.php
 │       └── welcome.blade.php
 ├── routes/
+│   ├── auth.php
 │   └── web.php
 ├── tailwind.config.js
 ├── vite.config.js
@@ -306,21 +307,12 @@ ChitChat/
 
 ## 🤝 Credits
 
-This project was developed with assistance from **Gemini Pro 2.0** by Google, which provided guidance on:
+This project was developed with assistance from **Gemini Pro 3.0** by Google, which provided guidance on:
 - Laravel best practices and architecture
 - Tailwind CSS styling and responsive design
 - JavaScript AJAX implementation for live updates
-- Database schema design and relationships
+- Database schema design and relationships (Mysql 8)
 - Modern web development patterns
 
-## 📄 License
-
-This project is open-source and available for educational purposes.
-
-## 👨‍💻 Author
-
-Developed as a midterm examination project for Laravel coursework.
-
----
 
 **ChitChat** - Where conversations come to life! 💬✨
