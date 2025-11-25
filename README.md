@@ -82,7 +82,7 @@ npm install
 ### Step 4: Environment Configuration
 1. Copy the example environment file:
 ```bash
-cp .env.example .env
+cp .env
 ```
 
 2. Generate application key:
@@ -153,12 +153,6 @@ This will create the following tables:
 - `jobs` - Queue system
 - `password_reset_tokens` - Password reset functionality
 - `sessions` - User session management
-
-### Step 3: (Optional) Seed Sample Data
-If you want to populate the database with test data:
-```bash
-php artisan db:seed
-```
 
 ### Database Schema Overview
 

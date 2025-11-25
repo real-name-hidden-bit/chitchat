@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // Get all tweets ordered by newest first, with user and likes count
-    $tweets = Tweet::with('user')
-        ->withCount('likes')
+    // Only show top-level tweets (not replies)
+    $tweets = Tweet::with(['user', 'replies.user'])
+        ->withCount(['likes', 'replies'])
+        ->whereNull('parent_id')
         ->latest()
         ->get();
     
@@ -39,10 +41,11 @@ Route::get('/my-tweets', function () {
         return redirect()->route('login');
     }
     
-    // Get only the authenticated user's tweets
-    $tweets = Tweet::with('user')
-        ->withCount('likes')
+    // Get only the authenticated user's tweets (not replies)
+    $tweets = Tweet::with(['user', 'replies.user'])
+        ->withCount(['likes', 'replies'])
         ->where('user_id', auth()->id())
+        ->whereNull('parent_id')
         ->latest()
         ->get();
     

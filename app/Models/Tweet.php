@@ -15,6 +15,7 @@ class Tweet extends Model
     protected $fillable = [
         'content',
         'user_id',
+        'parent_id',
     ];
 
     /**
@@ -39,5 +40,21 @@ class Tweet extends Model
     public function likedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'likes')->withTimestamps();
+    }
+
+    /**
+     * Get the parent tweet (if this is a reply).
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Tweet::class, 'parent_id');
+    }
+
+    /**
+     * Get all replies to this tweet.
+     */
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Tweet::class, 'parent_id');
     }
 }

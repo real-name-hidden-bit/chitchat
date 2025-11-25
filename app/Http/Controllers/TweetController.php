@@ -15,14 +15,16 @@ class TweetController extends Controller
     {
         $request->validate([
             'content' => ['required', 'string', 'max:280'],
+            'parent_id' => ['nullable', 'exists:tweets,id'],
         ]);
 
         Tweet::create([
             'content' => $request->content,
             'user_id' => Auth::id(),
+            'parent_id' => $request->parent_id,
         ]);
 
-        return redirect()->back()->with('success', 'Tweet posted!');
+        return redirect()->back()->with('success', $request->parent_id ? 'Reply posted!' : 'Tweet posted!');
     }
 
     /**

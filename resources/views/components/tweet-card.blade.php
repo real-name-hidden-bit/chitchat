@@ -96,6 +96,30 @@
 
                 {{-- Tweet Actions --}}
                 <div class="flex items-center space-x-12 mt-3">
+                    {{-- Reply Button --}}
+                    @auth
+                        <button 
+                            type="button"
+                            onclick="toggleReply({{ $tweet->id }})"
+                            class="group flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-sky-500 dark:hover:text-sky-400 transition">
+                            <div class="p-2 rounded-full group-hover:bg-sky-50 dark:group-hover:bg-sky-900/20 transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm">{{ ($tweet->replies_count ?? 0) > 0 ? ($tweet->replies_count ?? 0) : '' }}</span>
+                        </button>
+                    @else
+                        <div class="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
+                            <div class="p-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm">{{ ($tweet->replies_count ?? 0) > 0 ? ($tweet->replies_count ?? 0) : '' }}</span>
+                        </div>
+                    @endauth
+
                     {{-- Like Button --}}
                     @auth
                         <button 
@@ -127,6 +151,75 @@
                         </div>
                     @endauth
                 </div>
+
+                {{-- Reply Form (Hidden by default) --}}
+                @auth
+                    <div id="reply-form-{{ $tweet->id }}" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <form method="POST" action="{{ route('tweets.store') }}" class="flex space-x-3">
+                            @csrf
+                            <input type="hidden" name="parent_id" value="{{ $tweet->id }}">
+                            <x-user-avatar :user="auth()->user()" size="sm" class="flex-shrink-0" />
+                            <div class="flex-1">
+                                <textarea 
+                                    name="content" 
+                                    rows="2" 
+                                    maxlength="280"
+                                    class="w-full bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg p-3 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400 resize-none"
+                                    placeholder="Post your reply..."
+                                    required></textarea>
+                                <div class="flex justify-end gap-2 mt-2">
+                                    <button 
+                                        type="button" 
+                                        onclick="toggleReply({{ $tweet->id }})"
+                                        class="px-4 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold transition">
+                                        Cancel
+                                    </button>
+                                    <button 
+                                        type="submit" 
+                                        class="px-4 py-1.5 text-sm bg-sky-500 hover:bg-sky-600 text-white rounded-full font-semibold transition">
+                                        Reply
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                @endauth
+
+                {{-- Replies Section (Dropdown) --}}
+                @if($tweet->replies && $tweet->replies->count() > 0)
+                    <div class="mt-4">
+                        <button 
+                            onclick="toggleReplies({{ $tweet->id }})"
+                            class="text-sm text-sky-500 hover:text-sky-600 dark:text-sky-400 dark:hover:text-sky-300 font-semibold flex items-center space-x-1">
+                            <span id="replies-text-{{ $tweet->id }}">Show {{ $tweet->replies->count() }} {{ Str::plural('reply', $tweet->replies->count()) }}</span>
+                            <svg id="replies-icon-{{ $tweet->id }}" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <div id="replies-{{ $tweet->id }}" class="hidden mt-3 space-y-3 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
+                            @foreach($tweet->replies as $reply)
+                                <div class="flex space-x-2">
+                                    <a href="{{ route('profile.show', $reply->user) }}" class="flex-shrink-0">
+                                        <x-user-avatar :user="$reply->user" size="sm" />
+                                    </a>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center space-x-1 flex-wrap">
+                                            <a href="{{ route('profile.show', $reply->user) }}" class="font-bold text-sm text-gray-900 dark:text-white hover:underline">
+                                                {{ $reply->user->name }}
+                                            </a>
+                                            <span class="text-gray-500 dark:text-gray-400 text-xs">·</span>
+                                            <span class="text-gray-500 dark:text-gray-400 text-xs">
+                                                {{ $reply->created_at->diffForHumans() }}
+                                            </span>
+                                        </div>
+                                        <p class="text-sm text-gray-900 dark:text-white mt-1">{{ $reply->content }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -143,6 +236,36 @@ function toggleEdit(tweetId) {
     } else {
         contentDiv.classList.remove('hidden');
         editForm.classList.add('hidden');
+    }
+}
+
+function toggleReply(tweetId) {
+    const replyForm = document.getElementById('reply-form-' + tweetId);
+    
+    if (replyForm.classList.contains('hidden')) {
+        replyForm.classList.remove('hidden');
+        // Focus on textarea
+        const textarea = replyForm.querySelector('textarea');
+        if (textarea) textarea.focus();
+    } else {
+        replyForm.classList.add('hidden');
+    }
+}
+
+function toggleReplies(tweetId) {
+    const repliesDiv = document.getElementById('replies-' + tweetId);
+    const repliesIcon = document.getElementById('replies-icon-' + tweetId);
+    const repliesText = document.getElementById('replies-text-' + tweetId);
+    const replyCount = repliesDiv.children.length;
+    
+    if (repliesDiv.classList.contains('hidden')) {
+        repliesDiv.classList.remove('hidden');
+        repliesIcon.classList.add('rotate-180');
+        repliesText.textContent = 'Hide ' + replyCount + (replyCount === 1 ? ' reply' : ' replies');
+    } else {
+        repliesDiv.classList.add('hidden');
+        repliesIcon.classList.remove('rotate-180');
+        repliesText.textContent = 'Show ' + replyCount + (replyCount === 1 ? ' reply' : ' replies');
     }
 }
 
