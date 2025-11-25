@@ -53,13 +53,15 @@ This project was developed as a midterm examination project for a Laravel course
 - **Form Validation** - Server-side and client-side input validation
 - **Error Handling** - User-friendly error messages and alerts
 - **CSRF Protection** - Built-in Laravel security features
+- **Reply to Tweets** - Click the reply button on any tweet
 
 ### Prerequisites
 - PHP >= 8.2
 - Composer
 - Node.js and npm
-- MySQL/MariaDB database server
+- MySQL/MariaDB database server for local server
 - Git 
+- MySQL8 for database cloud storage
 
 ### Step 1: Clone the Repository
 ```bash
@@ -215,6 +217,8 @@ https://chitchat-main-ga5iuo.laravel.cloud
 ![About Me Screenshot](screenshots/about-me.png)
 *Editable biography section with 500-character limit and counter*
 
+### Reply Section
+![About Me Screenshot](screenshots/reply.png)
 
 
 ##  Project Structure
@@ -238,7 +242,7 @@ ChitChat/
 │       ├── 0001_01_01_000001_create_cache_table.php
 │       ├── 0001_01_01_000002_create_jobs_table.php
 │       ├── 0001_01_01_000002_create_tweets_table.php
-│       └── 2025_11_23_000003_create_tweets_table.php
+│       └── 2025_11_25_030641_add_parent_id_to_tweets_table.php  
 ├── resources/
 │   ├── css/
 │   │   └── app.css
